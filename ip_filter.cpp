@@ -26,9 +26,9 @@ std::vector<std::string> split(const std::string& str, char d)
 
 std::vector<int> transform(std::vector<std::string>& s) {
 	std::vector<int> sint;
-	for each (std::string var in s)
+	for (auto ip = s.cbegin(); ip != s.cend(); ++ip)
 	{
-		sint.push_back(std::stoi(var));
+		sint.push_back(std::stoi(*ip));
 	}
 	return sint;
 }
