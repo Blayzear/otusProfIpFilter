@@ -36,16 +36,18 @@ int main(int argc, char const* argv[])
 			ip_pool.push_back(split(v.at(0), '.'));
 		}
 
-		for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip) {
-			auto next_ip = ip;
-			next_ip++;
-			if (std::lexicographical_compare(ip->cbegin(), ip->cend(),
-				next_ip->cbegin(), next_ip->cend()))
-			{
-				std::swap(ip, next_ip);
-			}
-
+		std::sort(ip_pool.rbegin(), ip_pool.rend(), [](std::vector<std::string>& l, std::vector<std::string>& r)
+			{	std::vector<int> lint, rint;
+		for each (std::string var in l)
+		{
+			lint.push_back(std::stoi(var));
 		}
+		for each (std::string var in r)
+		{
+			rint.push_back(std::stoi(var));
+		}
+		return std::lexicographical_compare(lint.cbegin(), lint.cend(),
+			rint.cbegin(), rint.cend()); });
 
 		for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
 		{
@@ -80,7 +82,7 @@ int main(int argc, char const* argv[])
 					std::cout << std::endl;
 				}
 			}
-		};
+			};
 		filterfb(1, ip_pool);
 
 		// TODO filter by first and second bytes and output
@@ -88,7 +90,9 @@ int main(int argc, char const* argv[])
 			for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
 			{
 				auto ip_part = ip->cbegin();
-				if (*ip_part == std::to_string(i) && *ip_part++ == std::to_string(j))
+				auto next = ip_part;
+				next++;
+				if (*ip_part == std::to_string(i) && *next == std::to_string(j))
 				{
 					for (auto ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
 					{
