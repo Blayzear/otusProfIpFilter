@@ -24,7 +24,16 @@ std::vector<std::string> split(const std::string& str, char d)
 	return r;
 }
 
-int main(int argc, char const* argv[])
+std::vector<int> transform(std::vector<std::string>& s) {
+	std::vector<int> sint;
+	for each (std::string var in s)
+	{
+		sint.push_back(std::stoi(var));
+	}
+	return sint;
+}
+
+int main()
 {
 	try
 	{
@@ -36,18 +45,11 @@ int main(int argc, char const* argv[])
 			ip_pool.push_back(split(v.at(0), '.'));
 		}
 
-		std::sort(ip_pool.rbegin(), ip_pool.rend(), [](std::vector<std::string>& l, std::vector<std::string>& r)
-			{	std::vector<int> lint, rint;
-		for each (std::string var in l)
-		{
-			lint.push_back(std::stoi(var));
-		}
-		for each (std::string var in r)
-		{
-			rint.push_back(std::stoi(var));
-		}
-		return std::lexicographical_compare(lint.cbegin(), lint.cend(),
-			rint.cbegin(), rint.cend()); });
+		std::sort(ip_pool.rbegin(), ip_pool.rend(), [](std::vector<std::string>& l, std::vector<std::string>& r) {
+			std::vector<int> lint, rint;
+			lint = transform(l);
+			rint = transform(r);
+			return std::lexicographical_compare(lint.cbegin(), lint.cend(), rint.cbegin(), rint.cend()); });
 
 		for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
 		{
@@ -67,8 +69,8 @@ int main(int argc, char const* argv[])
 		auto filterfb = [](int&& i, auto ip_pool) {
 			for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
 			{
-				auto ip_part = ip->cbegin();
-				if (*ip_part == std::to_string(i))
+				auto ip_cbegin = ip->cbegin();
+				if (*ip_cbegin == std::to_string(i))
 				{
 					for (auto ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
 					{
@@ -89,10 +91,10 @@ int main(int argc, char const* argv[])
 		auto filterfsb = [](int&& i, int&& j, auto ip_pool) {
 			for (auto ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
 			{
-				auto ip_part = ip->cbegin();
-				auto next = ip_part;
+				auto ip_cbegin = ip->cbegin();
+				auto next = ip_cbegin;
 				next++;
-				if (*ip_part == std::to_string(i) && *next == std::to_string(j))
+				if (*ip_cbegin == std::to_string(i) && *next == std::to_string(j))
 				{
 					for (auto ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
 					{
